@@ -51,6 +51,26 @@
     .header-title { font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: -0.3px; }
     .header-sub { font-size: 10px; color: var(--gray); font-weight: 700; margin-top: 1px; }
 
+    .header-right { display: flex; align-items: center; gap: 8px; }
+
+    /* ─── LANGUAGE SELECTOR ─── */
+    .lang-select {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      padding: 5px 8px;
+      border-radius: 20px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      text-align: center;
+    }
+    .lang-select:focus { border-color: var(--gold); }
+
     .reset-btn {
       background: transparent;
       border: 1.5px solid var(--gray);
@@ -65,14 +85,16 @@
     }
     .reset-btn:active { background: var(--gray); color: var(--bg); }
 
-    /* ─── ACCOUNT TABS ─── */
-    .account-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    /* ─── ACCOUNT BAR ─── */
+    .account-bar-wrapper {
       background: var(--surface2);
       border-bottom: 1px solid var(--border);
-      padding: 8px 10px;
+      padding: 8px 10px 6px;
+    }
+    .account-bar {
+      display: grid;
       gap: 6px;
+      margin-bottom: 6px;
     }
     .acc-tab {
       border-radius: 12px;
@@ -104,7 +126,773 @@
     .acc-tab-badge.has-missing { color: var(--red); }
     .acc-tab.active .acc-tab-badge.has-missing { color: #c0392b; }
 
+    /* ─── ADD/REMOVE BUTTONS ─── */
+    .acc-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .acc-ctrl-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      width: 36px;
+      height: 26px;
+      border-radius: 13px;
+      border: 1.5px solid;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .acc-ctrl-btn.add-btn { border-color: var(--green); color: var(--green); background: transparent; }
+    .acc-ctrl-btn.add-btn:active { background: var(--green); color: var(--bg); }
+    .acc-ctrl-btn.rem-btn { border-color: var(--red); color: var(--red); background: transparent; }
+    .acc-ctrl-btn.rem-btn:active { background: var(--red); color: white; }
+    .acc-ctrl-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
     /* ─── MAIN ─── */
+    .main { padding: 10px 12px 110px; }
+
+    /* ─── PAGE ACCORDION ─── */
+    .page-block {
+      margin-bottom: 8px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .page-block.has-missing { border-color: rgba(232,69,60,0.35); }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .page-head:active { background: rgba(255,255,255,0.04); }
+
+    .page-left { display: flex; align-items: center; gap: 9px; }
+    .page-num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .page-title { font-size: 13px; font-weight: 800; color: var(--gold); }
+
+    .page-right { display: flex; align-items: center; gap: 8px; }
+    .page-status { font-size: 11px; font-weight: 700; }
+    .page-status.ok { color: var(--green); }
+    .page-status.bad { color: var(--red); }
+    .chevron { font-size: 12px; color: var(--gray); transition: transform 0.2s; }
+    .page-block.open .chevron { transform: rotate(180deg); }
+
+    .page-body { display: none; padding: 0 14px 14px; }
+    .page-block.open .page-body { display: block; }
+
+    /* ─── PAGE TOOLBAR ─── */
+    .page-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .mini-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 10px;
+      border: 1.5px solid;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mini-btn.none-btn { border-color: var(--gray); color: var(--gray); background: transparent; }
+    .mini-btn.none-btn:active { background: var(--gray); color: var(--bg); }
+    .mini-btn.all-btn { border-color: var(--red); color: var(--red); background: transparent; }
+    .mini-btn.all-btn:active { background: var(--red); color: white; }
+
+    /* ─── CARD GRID ─── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+    }
+    .card-btn {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      transition: all 0.14s;
+      min-height: 48px;
+    }
+    .card-btn .card-num {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--gray);
+    }
+    .card-btn .card-label {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--gray);
+      opacity: 0.6;
+    }
+    .card-btn.missing {
+      background: var(--red-bg);
+      border-color: var(--red);
+    }
+    .card-btn.missing .card-num { color: var(--red); }
+    .card-btn.missing .card-label { color: var(--red); opacity: 0.8; }
+    .card-btn:active { transform: scale(0.9); }
+
+    /* ─── CALCULATE BTN ─── */
+    .calc-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 14px 22px;
+      background: linear-gradient(to top, var(--bg) 65%, transparent);
+      z-index: 200;
+    }
+    .calc-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      border-radius: 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 24px var(--gold-glow);
+      letter-spacing: 0.2px;
+      transition: all 0.15s;
+    }
+    .calc-btn:active { transform: scale(0.97); background: var(--gold-dark); }
+
+    /* ─── MODAL ─── */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.72);
+      z-index: 500;
+      backdrop-filter: blur(5px);
+      align-items: flex-end;
+    }
+    .overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 22px 22px 0 0;
+      width: 100%;
+      max-height: 88dvh;
+      display: flex;
+      flex-direction: column;
+      border-top: 2px solid var(--gold);
+    }
+    .modal-drag { width: 38px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 10px auto 0; }
+    .modal-head {
+      padding: 14px 18px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: 17px; font-weight: 900; color: var(--gold); }
+    .modal-close {
+      background: rgba(255,255,255,0.1); border: none; color: var(--text);
+      width: 30px; height: 30px; border-radius: 50%; font-size: 16px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-family: 'Nunito', sans-serif;
+    }
+    .modal-scroll { overflow-y: auto; padding: 14px 16px 32px; flex: 1; }
+    .modal-scroll::-webkit-scrollbar { width: 3px; }
+    .modal-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+    /* ─── RESULT CARDS ─── */
+    .result-summary {
+      background: rgba(245,200,66,0.1);
+      border: 1px solid rgba(245,200,66,0.3);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+    .result-summary .highlight { color: var(--gold); }
+    .result-summary .good { color: var(--green); }
+    .result-summary .bad { color: var(--red); }
+
+    .recv-block { margin-bottom: 18px; }
+    .recv-label {
+      font-size: 12px; font-weight: 900;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .recv-label-icon { font-size: 18px; }
+
+    .transfer-row {
+      border-radius: 10px;
+      padding: 10px 13px;
+      margin-bottom: 6px;
+      border-left: 3px solid var(--green);
+      background: var(--green-bg);
+    }
+    .transfer-row.warn {
+      border-left-color: var(--red);
+      background: var(--red-bg);
+    }
+    .transfer-from {
+      font-size: 11px; font-weight: 800;
+      color: var(--green); margin-bottom: 5px;
+    }
+    .transfer-row.warn .transfer-from { color: var(--red); }
+    .transfer-cards {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+    .card-pill {
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--gray);
+    }
+    .empty-state .e-icon { font-size: 52px; margin-bottom: 10px; }
+    .empty-state .e-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .empty-state .e-sub { font-size: 12px; font-weight: 600; line-height: 1.6; }
+
+    .success-state {
+      text-align: center;
+      padding: 32px 16px;
+    }
+    .success-state .s-icon { font-size: 60px; margin-bottom: 12px; }
+    .success-state .s-title { font-size: 20px; font-weight: 900; color: var(--green); margin-bottom: 6px; }
+    .success-state .s-sub { font-size: 13px; font-weight: 600; color: var(--gray); }
+
+    .divider { height: 1px; background: var(--border); margin: 10px 0 14px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <span class="header-icon">🎲</span>
+    <div>
+      <div class="header-title">Monopoly GO</div>
+      <div class="header-sub" id="header-sub">ТРЕКЕР НА КАРТИ</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <select class="lang-select" id="lang-select" onchange="setLang(this.value)">
+      <option value="bg">🇧🇬 BG</option>
+      <option value="en">🇬🇧 EN</option>
+    </select>
+    <button class="reset-btn" onclick="resetAll()" id="btn-reset">↺ Нулирай</button>
+  </div>
+</div>
+
+<!-- ACCOUNT TABS + CONTROLS -->
+<div class="account-bar-wrapper">
+  <div class="account-bar" id="account-bar"></div>
+  <div class="acc-controls">
+    <button class="acc-ctrl-btn rem-btn" id="btn-rem" onclick="removeAccount()">−</button>
+    <button class="acc-ctrl-btn add-btn" id="btn-add" onclick="addAccount()">+</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main"></div>
+
+<!-- CALCULATE BUTTON -->
+<div class="calc-bar">
+  <button class="calc-btn" onclick="calculate()" id="btn-calc">⚡ Изчисли трансфери</button>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">📋 План за трансфери</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-scroll" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════
+const N_PAGES  = 21;
+const N_CARDS  = 9;
+const MIN_ACC  = 2;
+const MAX_ACC  = 5;
+
+const ACC_ICONS  = ['🔴','🔵','🟢','🟡','🟠'];
+
+// ════════════════════════════════════════
+//  TRANSLATIONS
+// ════════════════════════════════════════
+const LANG = {
+  bg: {
+    headerSub:      (n) => `ТРЕКЕР НА КАРТИ • ${n} АКАУНТА`,
+    accName:        (i) => `Акаунт ${i+1}`,
+    accShort:       (i) => `АКТ ${i+1}`,
+    btnReset:       '↺ Нулирай',
+    btnCalc:        '⚡ Изчисли трансфери',
+    resetConfirm:   'Нулиране на всички данни от всички акаунти?',
+    removeConfirm:  (n) => `Премахване на Акаунт ${n}? Данните му ще бъдат изтрити.`,
+    pageFull:       '✓ Пълна',
+    pageMissing:    (n) => `${n} липсват`,
+    pageTitle:      (i) => `Страница ${i+1}`,
+    haveAll:        '✓ Имам всички',
+    missingAll:     '✗ Липсват всички',
+    cardLabel:      'карта',
+    card:           'card',
+    modalTitle:     '📋 План за трансфери',
+    totalMissing:   (n) => `Общо липсващи: <span class="highlight">${n} карти</span>`,
+    canTransfer:    (n) => `<span class="good">✓ Могат да се прехвърлят: ${n}</span>`,
+    noneHas:        (n) => `<span class="bad">✗ Никой няма: ${n}</span>`,
+    receives:       (name) => `${name} получава:`,
+    sends:          (name, n) => `${name} изпраща (${n} карти):`,
+    noneHasCards:   (n) => `⚠️ Никой акаунт няма тези карти (${n}):`,
+    legend:         'С = Страница &nbsp;|&nbsp; К = Карта',
+    pillPage:       'С',
+    pillCard:       'К',
+    successTitle:   'Всички колекции са пълни!',
+    successSub:     (n) => `Никой от ${n}-те акаунта няма липсващи карти.`,
+    emptyTitle:     'Няма маркирани липсващи карти',
+    emptySub:       'Маркирай кои карти липсват на всеки акаунт и натисни отново.',
+    okBadge:        '✓ OK',
+  },
+  en: {
+    headerSub:      (n) => `CARD TRACKER • ${n} ACCOUNTS`,
+    accName:        (i) => `Account ${i+1}`,
+    accShort:       (i) => `ACC ${i+1}`,
+    btnReset:       '↺ Reset',
+    btnCalc:        '⚡ Calculate Transfers',
+    resetConfirm:   'Reset all data from all accounts?',
+    removeConfirm:  (n) => `Remove Account ${n}? Its data will be deleted.`,
+    pageFull:       '✓ Full',
+    pageMissing:    (n) => `${n} missing`,
+    pageTitle:      (i) => `Page ${i+1}`,
+    haveAll:        '✓ I have all',
+    missingAll:     '✗ All missing',
+    cardLabel:      'card',
+    modalTitle:     '📋 Transfer Plan',
+    totalMissing:   (n) => `Total missing: <span class="highlight">${n} cards</span>`,
+    canTransfer:    (n) => `<span class="good">✓ Can be transferred: ${n}</span>`,
+    noneHas:        (n) => `<span class="bad">✗ Nobody has: ${n}</span>`,
+    receives:       (name) => `${name} receives:`,
+    sends:          (name, n) => `${name} sends (${n} cards):`,
+    noneHasCards:   (n) => `⚠️ No account has these cards (${n}):`,
+    legend:         'P = Page &nbsp;|&nbsp; C = Card',
+    pillPage:       'P',
+    pillCard:       'C',
+    successTitle:   'All collections are complete!',
+    successSub:     (n) => `None of the ${n} accounts have missing cards.`,
+    emptyTitle:     'No missing cards marked',
+    emptySub:       'Mark which cards are missing for each account and press again.',
+    okBadge:        '✓ OK',
+  }
+};
+
+let currentLang = 'bg';
+let t = LANG['bg'];
+
+function setLang(lang) {
+  currentLang = lang;
+  t = LANG[lang];
+  document.getElementById('lang-select').value = lang;
+  applyLangUI();
+  renderTabs();
+  renderPages();
+}
+
+function applyLangUI() {
+  document.getElementById('header-sub').textContent = t.headerSub(nAcc);
+  document.getElementById('btn-reset').textContent = t.btnReset;
+  document.getElementById('btn-calc').textContent = t.btnCalc;
+  document.getElementById('modal-title').textContent = t.modalTitle;
+}
+
+// ════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════
+let nAcc = 2;
+let missing = [];
+let currentAcc = 0;
+
+function initState() {
+  missing = Array.from({length: nAcc}, () =>
+    Array.from({length: N_PAGES}, () => new Array(N_CARDS).fill(false))
+  );
+}
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('mgo_v3');
+    if (s) {
+      const saved = JSON.parse(s);
+      nAcc        = saved.nAcc        || 2;
+      currentLang = saved.currentLang || 'bg';
+      missing     = saved.missing;
+      t           = LANG[currentLang];
+      document.getElementById('lang-select').value = currentLang;
+    } else {
+      initState();
+    }
+  } catch { initState(); }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('mgo_v3', JSON.stringify({ nAcc, currentLang, missing }));
+  } catch {}
+}
+
+// ════════════════════════════════════════
+//  ACCOUNT MANAGEMENT
+// ════════════════════════════════════════
+function addAccount() {
+  if (nAcc >= MAX_ACC) return;
+  nAcc++;
+  missing.push(Array.from({length: N_PAGES}, () => new Array(N_CARDS).fill(false)));
+  saveState();
+  updateCtrlButtons();
+  renderTabs();
+  renderPages();
+  applyLangUI();
+}
+
+function removeAccount() {
+  if (nAcc <= MIN_ACC) return;
+  const msg = t.removeConfirm(nAcc);
+  if (!confirm(msg)) return;
+  missing.splice(nAcc - 1, 1);
+  nAcc--;
+  if (currentAcc >= nAcc) currentAcc = nAcc - 1;
+  saveState();
+  updateCtrlButtons();
+  renderTabs();
+  renderPages();
+  applyLangUI();
+}
+
+function updateCtrlButtons() {
+  document.getElementById('btn-add').disabled = nAcc >= MAX_ACC;
+  document.getElementById('btn-rem').disabled = nAcc <= MIN_ACC;
+}
+
+// ════════════════════════════════════════
+//  COUNTS
+// ════════════════════════════════════════
+function countMissing(a) {
+  return missing[a].flat().filter(Boolean).length;
+}
+function pageCount(a, p) {
+  return missing[a][p].filter(Boolean).length;
+}
+
+// ════════════════════════════════════════
+//  RENDER TABS
+// ════════════════════════════════════════
+function renderTabs() {
+  const bar = document.getElementById('account-bar');
+  bar.style.gridTemplateColumns = `repeat(${nAcc}, 1fr)`;
+  bar.innerHTML = '';
+  for (let a = 0; a < nAcc; a++) {
+    const cnt = countMissing(a);
+    const div = document.createElement('div');
+    div.className = 'acc-tab' + (a === currentAcc ? ' active' : '');
+    div.onclick = () => switchAcc(a);
+    div.innerHTML = `
+      <span class="acc-tab-icon">${ACC_ICONS[a]}</span>
+      <span class="acc-tab-name">${t.accShort(a)}</span>
+      <span class="acc-tab-badge ${cnt > 0 ? 'has-missing' : ''}">${cnt > 0 ? cnt + ' ✗' : t.okBadge}</span>
+    `;
+    bar.appendChild(div);
+  }
+}
+
+// ════════════════════════════════════════
+//  RENDER PAGES
+// ════════════════════════════════════════
+function renderPages() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  for (let p = 0; p < N_PAGES; p++) {
+    const cnt = pageCount(currentAcc, p);
+    const open = cnt > 0;
+    const block = document.createElement('div');
+    block.id = `pb-${p}`;
+    block.className = `page-block${open ? ' open has-missing' : ''}`;
+
+    block.innerHTML = `
+      <div class="page-head" onclick="togglePage(${p})">
+        <div class="page-left">
+          <div class="page-num">${p+1}</div>
+          <div class="page-title">${t.pageTitle(p)}</div>
+        </div>
+        <div class="page-right">
+          <span class="page-status ${cnt === 0 ? 'ok' : 'bad'}" id="pst-${p}">
+            ${cnt === 0 ? t.pageFull : t.pageMissing(cnt)}
+          </span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="page-body">
+        <div class="page-toolbar">
+          <button class="mini-btn none-btn" onclick="markPageNone(event,${p})">${t.haveAll}</button>
+          <button class="mini-btn all-btn" onclick="markPageAll(event,${p})">${t.missingAll}</button>
+        </div>
+        <div class="cards-grid" id="grid-${p}"></div>
+      </div>
+    `;
+    main.appendChild(block);
+    renderCards(p);
+  }
+}
+
+function renderCards(p) {
+  const grid = document.getElementById(`grid-${p}`);
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (let c = 0; c < N_CARDS; c++) {
+    const m = missing[currentAcc][p][c];
+    const btn = document.createElement('button');
+    btn.className = `card-btn${m ? ' missing' : ''}`;
+    btn.id = `card-${p}-${c}`;
+    btn.innerHTML = `<span class="card-num">${c+1}</span><span class="card-label">${t.cardLabel}</span>`;
+    btn.onclick = () => toggleCard(p, c);
+    grid.appendChild(btn);
+  }
+}
+
+// ════════════════════════════════════════
+//  INTERACTIONS
+// ════════════════════════════════════════
+function togglePage(p) {
+  document.getElementById(`pb-${p}`).classList.toggle('open');
+}
+
+function toggleCard(p, c) {
+  missing[currentAcc][p][c] = !missing[currentAcc][p][c];
+  saveState();
+  const btn = document.getElementById(`card-${p}-${c}`);
+  if (btn) btn.classList.toggle('missing', missing[currentAcc][p][c]);
+  refreshPageStatus(p);
+  refreshTab(currentAcc);
+}
+
+function markPageAll(e, p) {
+  e.stopPropagation();
+  for (let c = 0; c < N_CARDS; c++) missing[currentAcc][p][c] = true;
+  saveState(); renderCards(p); refreshPageStatus(p); refreshTab(currentAcc);
+}
+
+function markPageNone(e, p) {
+  e.stopPropagation();
+  for (let c = 0; c < N_CARDS; c++) missing[currentAcc][p][c] = false;
+  saveState(); renderCards(p); refreshPageStatus(p); refreshTab(currentAcc);
+}
+
+function refreshPageStatus(p) {
+  const cnt = pageCount(currentAcc, p);
+  const el = document.getElementById(`pst-${p}`);
+  const block = document.getElementById(`pb-${p}`);
+  if (el) {
+    el.className = `page-status ${cnt === 0 ? 'ok' : 'bad'}`;
+    el.textContent = cnt === 0 ? t.pageFull : t.pageMissing(cnt);
+  }
+  if (block) block.classList.toggle('has-missing', cnt > 0);
+}
+
+function refreshTab(a) {
+  const cnt = countMissing(a);
+  const badge = document.querySelector(`#account-bar .acc-tab:nth-child(${a+1}) .acc-tab-badge`);
+  if (badge) {
+    badge.className = `acc-tab-badge ${cnt > 0 ? 'has-missing' : ''}`;
+    badge.textContent = cnt > 0 ? `${cnt} ✗` : t.okBadge;
+  }
+}
+
+function switchAcc(a) {
+  currentAcc = a;
+  renderTabs();
+  renderPages();
+}
+
+function resetAll() {
+  if (!confirm(t.resetConfirm)) return;
+  initState();
+  saveState();
+  renderTabs();
+  renderPages();
+}
+
+// ════════════════════════════════════════
+//  CALCULATE TRANSFERS
+// ════════════════════════════════════════
+function calculate() {
+  let totalMissing = 0, totalSolvable = 0, totalUnsolvable = 0;
+  const transfers  = Array.from({length: nAcc}, () => ({}));
+  const unsolvable = Array.from({length: nAcc}, () => []);
+  const senderLoad = new Array(nAcc).fill(0);
+
+  for (let a = 0; a < nAcc; a++) {
+    for (let p = 0; p < N_PAGES; p++) {
+      for (let c = 0; c < N_CARDS; c++) {
+        if (!missing[a][p][c]) continue;
+        totalMissing++;
+        const donors = [];
+        for (let b = 0; b < nAcc; b++) {
+          if (b !== a && !missing[b][p][c]) donors.push(b);
+        }
+        if (donors.length === 0) {
+          totalUnsolvable++;
+          unsolvable[a].push({p, c});
+        } else {
+          donors.sort((x,y) => senderLoad[x] - senderLoad[y]);
+          const donor = donors[0];
+          senderLoad[donor]++;
+          totalSolvable++;
+          if (!transfers[a][donor]) transfers[a][donor] = [];
+          transfers[a][donor].push({p, c});
+        }
+      }
+    }
+  }
+
+  renderResults(transfers, unsolvable, totalMissing, totalSolvable, totalUnsolvable);
+  document.getElementById('overlay').classList.add('open');
+}
+
+// ════════════════════════════════════════
+//  RENDER RESULTS
+// ════════════════════════════════════════
+function renderResults(transfers, unsolvable, totalMissing, totalSolvable, totalUnsolvable) {
+  const body = document.getElementById('modal-body');
+
+  if (totalMissing === 0) {
+    body.innerHTML = `
+      <div class="success-state">
+        <div class="s-icon">🏆</div>
+        <div class="s-title">${t.successTitle}</div>
+        <div class="s-sub">${t.successSub(nAcc)}</div>
+      </div>`;
+    return;
+  }
+
+  const hasAny = transfers.some((tr,a) => Object.keys(tr).length > 0 || unsolvable[a].length > 0);
+  if (!hasAny) {
+    body.innerHTML = `
+      <div class="empty-state">
+        <div class="e-icon">🃏</div>
+        <div class="e-title">${t.emptyTitle}</div>
+        <div class="e-sub">${t.emptySub}</div>
+      </div>`;
+    return;
+  }
+
+  let html = `
+    <div class="result-summary">
+      ${t.totalMissing(totalMissing)}<br>
+      ${t.canTransfer(totalSolvable)}<br>
+      ${totalUnsolvable > 0 ? t.noneHas(totalUnsolvable) : ''}
+    </div>
+  `;
+
+  for (let a = 0; a < nAcc; a++) {
+    const senders = Object.keys(transfers[a]);
+    const noone = unsolvable[a];
+    if (senders.length === 0 && noone.length === 0) continue;
+
+    html += `<div class="recv-block">`;
+    html += `<div class="recv-label">
+      <span class="recv-label-icon">${ACC_ICONS[a]}</span>
+      ${t.receives(t.accName(a))}
+    </div>`;
+
+    for (const senderKey of senders) {
+      const s = parseInt(senderKey);
+      const cards = transfers[a][s];
+      const pills = cards.map(({p,c}) =>
+        `<span class="card-pill">${t.pillPage}${p+1}/${t.pillCard}${c+1}</span>`
+      ).join('');
+      html += `
+        <div class="transfer-row">
+          <div class="transfer-from">${ACC_ICONS[s]} ${t.sends(t.accName(s), cards.length)}</div>
+          <div class="transfer-cards">${pills}</div>
+        </div>`;
+    }
+
+    if (noone.length > 0) {
+      const pills = noone.map(({p,c}) =>
+        `<span class="card-pill">${t.pillPage}${p+1}/${t.pillCard}${c+1}</span>`
+      ).join('');
+      html += `
+        <div class="transfer-row warn">
+          <div class="transfer-from">${t.noneHasCards(noone.length)}</div>
+          <div class="transfer-cards">${pills}</div>
+        </div>`;
+    }
+
+    html += `</div><div class="divider"></div>`;
+  }
+
+  html += `<div style="text-align:center;font-size:11px;font-weight:700;color:var(--gray);margin-top:4px">
+    ${t.legend}
+  </div>`;
+
+  body.innerHTML = html;
+}
+
+// ════════════════════════════════════════
+//  MODAL
+// ════════════════════════════════════════
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+function overlayClick(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+// ════════════════════════════════════════
+//  START
+// ════════════════════════════════════════
+loadState();
+updateCtrlButtons();
+applyLangUI();
+renderTabs();
+renderPages();
+</script>
+</body>
+</html>
     .main { padding: 10px 12px 110px; }
 
     /* ─── PAGE ACCORDION ─── */
